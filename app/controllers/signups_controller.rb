@@ -1,16 +1,16 @@
 class SignupsController < ApplicationController
-rescue_from ActiveRecord::RecordNotFound, with: :invalid_data
+rescue_from ActiveRecord::RecordInvalid, with: :invalid_data
 
     def create
         signup = Signup.create!(signup_params)
-        render json: signup, status: :created
+        render json: signup.activity, status: :created
     end
 
     def signup_params
-        params.require(:signup).permit(:activity_id, :camper_id)
+        params.permit(:camper_id, :activity_id, :time)
     end
 
     def invalid_data(exception)
-        render json: {errors: exception.errors.full_messages}, status: 422
+        render json: {errors: exception.record.errors.full_messages}, status: 422
     end
 end

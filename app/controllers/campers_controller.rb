@@ -21,11 +21,11 @@ class CampersController < ApplicationController
     end
 
     def camper_params
-        params.require(:camper).permit(:name, :age)
+        params.permit(:name, :age)
     end
 
     def invalid_data(exception)
-        render json: {errors: exception.errors.full_messages}, status: 422
+        render json: {errors: exception.record.errors.full_messages}, status: 422
     end
 
 end
